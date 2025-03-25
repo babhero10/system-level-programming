@@ -1,0 +1,16 @@
+# Ignore all files in the project
+*
+
+# Do not ignore directories (to ensure Git tracks folder structure)
+!*/
+
+# Do not ignore source files with specific extensions
+!*.c
+!*.h
+!.gitignore
+
+# Ignore specific binaries by name
+pwd
+cd
+etc
+
