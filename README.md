@@ -1,7 +1,7 @@
-# UNIX Utilities
+# Low level programming
 
 ## Project Description
-This project implements basic UNIX utility commands including pwd, echo, cp, and mv.
+This project implements basic UNIX utility commands including pwd, echo, cp, and mv and also implements shells (femto).
 
 ## Prerequisites
 - GCC compiler
@@ -11,7 +11,7 @@ This project implements basic UNIX utility commands including pwd, echo, cp, and
 ## Compilation and Usage
 
 ### Building the Project
-To compile all utilities, run:
+To compile all, run:
 ```bash
 make
 ```
@@ -23,46 +23,36 @@ make clean
 ```
 
 ### Running Utilities
-After compilation, you can run the utilities from the `executables/` directory:
+After compilation, you can run the utilities from the `executables/utilies` directory:
 
 - Print Working Directory utility:
   ```bash
-  ./executables/pwd
+  ./executables/utilies/pwd
   ```
 
 - Echo utility:
   ```bash
-  ./executables/echo [arguments]
+  ./executables/utilies/echo [arguments]
   ```
 
 - Copy utility:
   ```bash
-  ./executables/cp [source] [destination]
+  ./executables/utilies/cp [source] [destination]
   ```
 
 - Move utility:
   ```bash
-  ./executables/mv [source] [destination]
+  ./executables/utilies/mv [source] [destination]
+  ```
+  
+### Running Shells
+After compilation, you can run the shells from the `executables/shells` directory:
+
+- Femto shell:
+  ```bash
+  ./executables/shells/femto_shell
   ```
 
-## Example Usage
-```bash
-# Compile the project
-make
-
-# Print current directory
-./executables/pwd
-
-# Display a message
-./executables/echo "Hello, UNIX Utilities!"
-
-# Copy a file
-./executables/cp source.txt destination.txt
-
-# Move a file
-./executables/mv oldname.txt newname.txt
-```
-
 ## Notes
-- Ensure you have executable permissions for the utility files
+- Ensure you have executable permissions for all files
 - Run `chmod +x executables/*` if needed
