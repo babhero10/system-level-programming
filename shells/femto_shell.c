@@ -39,8 +39,6 @@ int main(void) {
       } else {
         printf("Invalid command\n");
       }
-    } else {
-      printf("\n");
     }
 
     free(my_argv);
