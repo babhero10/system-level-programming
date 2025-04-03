@@ -21,7 +21,7 @@ int main(void) {
     if (read == -1) {
       perror("Error occurred while reading input.\n");
       free(buffer);
-      return 1;
+      exit(-1);
     }
 
     buffer[read - 1] = '\0';
