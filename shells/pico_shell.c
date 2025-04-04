@@ -1,12 +1,12 @@
 #define _GNU_SOURCE
+#include "../helper/include/helper.h"
+#include "../unix_utilities/include/utils.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "../helper/include/helper.h"
-#include "../unix_utilities/include/utils.h"
 
 int main(void) {
 
@@ -53,7 +53,9 @@ int main(void) {
         printf("\033[H\033[J");
       } else {
         pid_t pid = fork();
-        if (pid != 0) {
+        if (pid < 0) {
+          fprintf(stderr, "Can't create the process\n");
+        } else if (pid > 0) {
           int status;
           wait(&status);
           WEXITSTATUS(status);
