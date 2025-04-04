@@ -74,7 +74,7 @@ int count_chars_in_string(char *text, char find_chr) {
 
   unsigned char continued = 0;
   int count = 0;
-  int i;
+  size_t i;
   for (i = 0; i < strlen(text); i++) {
     if (find_chr == text[i]) {
       if (continued == 0) {
