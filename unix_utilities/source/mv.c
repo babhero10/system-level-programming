@@ -3,10 +3,14 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
+#include "../include/utils.h"
 
-#define BUFFER_SIZE 512
+// int main(int argc, char *argv[]) {
+//   mv(argc, argv);
+//   return 0;
+// }
 
-int main(int argc, char *argv[]) {
+void mv(int argc, char *argv[]) {
   if (argc != 3) {
     fprintf(stderr, "Usage: mv source_file dist_file\n");
     exit(-1);
@@ -19,6 +23,4 @@ int main(int argc, char *argv[]) {
       exit(-1);
     }
   }
-
-  return 0;
 }

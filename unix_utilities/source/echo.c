@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "../include/utils.h"
 
 void parse_string(char text[]);
 void parse_special_char(char special_char);
 
-int main(int argc, char *argv[]) {
+// int main(int argc, char *argv[]) {
+//   echo(argc, argv);
+//   return 0;
+// }
+
+void echo(int argc, char *argv[]) {
   int i;
 
   for (i = 1; i < argc; i++) {
@@ -16,7 +22,6 @@ int main(int argc, char *argv[]) {
   }
 
   printf("\n");
-  return 0;
 }
 
 void parse_string(char text[]) {

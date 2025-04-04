@@ -2,10 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "../include/utils.h"
 
-#define BUFFER_SIZE 1024
+// int main(void) {
+//   pwd();
+//   return 0;
+// }
 
-int main(void) {
+void pwd(void) {
   char buf[BUFFER_SIZE];
   char *res;
 
@@ -30,6 +34,4 @@ int main(void) {
   }
 
   printf("%s\n", res);
-
-  return 0;
 }

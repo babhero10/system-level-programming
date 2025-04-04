@@ -1,11 +1,16 @@
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
 #include <unistd.h>
+#include "../include/utils.h"
 
-#define BUFFER_SIZE 512
 
-int main(int argc, char *argv[]) {
+// int main(int argc, char *argv[]) {
+//   cp(argc, argv);
+//   return 0; 
+// }
+
+void cp(int argc, char *argv[]) {
   int ret;
   int source_file_discriptor, dist_file_discriptor;
   char buffer[BUFFER_SIZE];
@@ -29,7 +34,6 @@ int main(int argc, char *argv[]) {
     close(source_file_discriptor);
     exit(-3);
   }
-
 
   while (1) {
     ret = read(source_file_discriptor, buffer, 512);
@@ -55,6 +59,4 @@ int main(int argc, char *argv[]) {
 
   close(source_file_discriptor);
   close(dist_file_discriptor);
-
-  return 0;
 }
