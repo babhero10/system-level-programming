@@ -3,9 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-
-void get_args(int *argc, char **argv[], char *text);
-void echo(int argc, char *argv[]);
+#include "../helper/include/helper.h"
+#include "../unix_utilities/include/utils.h"
 
 int main(void) {
 
@@ -56,69 +55,4 @@ int main(void) {
   free(my_argv);
   free(buffer);
   return 0;
-}
-
-void get_args(int *argc, char ***argv, char *text) {
-  *argv = (char **)malloc((strlen(text) / 2) * sizeof(char *));
-  *argc = 0;
-
-  char *next_arg = strtok(text, " ");
-
-  while (next_arg != NULL) {
-    (*argv)[(*argc)++] = next_arg;
-    next_arg = strtok(NULL, " ");
-  }
-}
-
-void parse_special_char(char special_char) {
-  switch (special_char) {
-  case 'n':
-    printf("\n");
-    break;
-  case 't':
-    printf("\t");
-    break;
-  case 'r':
-    printf("\r");
-    break;
-  case 'b':
-    printf("\b");
-    break;
-  case 'f':
-    printf("\f");
-    break;
-  case 'v':
-    printf("\v");
-    break;
-  default:
-    printf("%c", special_char);
-    break;
-  }
-}
-
-void parse_string(char text[]) {
-  const int len = strlen(text);
-  int i;
-
-  for (i = 0; i < len; i++) {
-    if (text[i] != '\\') {
-      fputc(text[i], stdout);
-    } else if (i + 1 < len) {
-      i++;
-      parse_special_char(text[i]);
-    }
-  }
-}
-
-void echo(int argc, char *argv[]) {
-  int i;
-
-  for (i = 1; i < argc; i++) {
-    parse_string(argv[i]);
-    if (i < argc - 1) {
-      printf(" ");
-    }
-  }
-
-  printf("\n");
 }
