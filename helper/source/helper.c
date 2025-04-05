@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 void get_args(int *argc, char ***argv, char *text) {
   *argc = 0;
@@ -101,5 +102,94 @@ char *create_string(int len) {
 void free_string(char *str) {
   if (str != NULL) {
     free(str);
+  }
+}
+
+void get_key_value(char *kv_text, char **key, char **value) {
+  char *kv_dup = strdup(kv_text);
+  *value = strchr(kv_dup, '=');
+  if (*value == NULL) {
+    free(kv_dup);
+    *key = NULL;
+    *value = NULL;
+    return;
+  }
+
+  *(*value) = '\0';
+  *key = kv_dup;
+  *value = *value + 1;
+}
+
+
+char *lookup_var(char *var, Dictionary *local_var) {
+  char *ret = NULL;
+  ret = dict_get(local_var, var);
+
+  if (ret != NULL) {
+    return ret;
+  } 
+
+  ret = getenv(var);
+
+  return ret;
+}
+
+char *replace_string(char *src, char *sub_text, int replace_from, int replace_to) {
+    int src_len = strlen(src);
+    int sub_len = strlen(sub_text);
+
+    // Calculate length of new string
+    int new_len = replace_from + sub_len + (src_len - replace_to);
+    char *result = malloc(new_len + 1); // +1 for null terminator
+
+    if (!result) return NULL;
+
+    // Copy part before replacement
+    strncpy(result, src, replace_from);
+    result[replace_from] = '\0';
+
+    // Append the sub_text
+    strcat(result, sub_text);
+
+    // Append the rest of the original string after replace_to
+    strcat(result, src + replace_to);
+
+    return result;
+}
+
+void parse_args(int argc, char *argv[], Dictionary *local_vars) {
+  for (int i = 0; i < argc; i++) {
+    char *arg = argv[i];
+    char *pos = strchr(arg, '$');
+
+    while (pos != NULL) {
+      // Move past the $
+      char *start = pos + 1;
+      if (!isalnum(*start) && *start != '_') {
+        // Not a valid var name, skip this $
+        pos = strchr(pos + 1, '$');
+        continue;
+      }
+
+      // Find end of the variable name
+      char *end = start;
+      while (isalnum(*end) || *end == '_') end++;
+
+      int var_name_len = end - start;
+      char var_name[var_name_len + 1];
+      strncpy(var_name, start, var_name_len);
+      var_name[var_name_len] = '\0';
+
+      char *value = lookup_var(var_name, local_vars);
+      if (!value) value = "";
+
+      int from = pos - arg;
+      int to = end - arg;
+
+      arg = replace_string(arg, value, from, to);
+      pos = strchr(arg + from + strlen(value), '$');
+    }
+
+    argv[i] = arg;
   }
 }

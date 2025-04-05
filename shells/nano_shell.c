@@ -1,12 +1,12 @@
 #define _GNU_SOURCE
+#include "../helper/include/helper.h"
+#include "../unix_utilities/include/utils.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "../helper/include/helper.h"
-#include "../unix_utilities/include/utils.h"
 
 int main(void) {
 
@@ -16,9 +16,11 @@ int main(void) {
   size_t len;
   ssize_t ret;
   int i = 0;
+  Dictionary *local_vars = dict_create(16);
+  char *key = NULL, *value = NULL;
 
   while (1) {
-    printf("Pico shell prompt > ");
+    printf("Nano shell prompt > ");
 
     ret = getline(&buffer, &len, stdin);
     if (ret == -1) {
@@ -36,9 +38,12 @@ int main(void) {
     }
 
     get_args(&my_argc, &my_argv, buffer);
-
+    parse_args(my_argc, my_argv, local_vars);
     if (my_argc > 0) {
-      if (strcmp(my_argv[0], "pwd") == 0) {
+      if (strchr(my_argv[0], '=') != NULL && my_argc < 2) {
+        get_key_value(my_argv[0], &key, &value);
+        dict_put(local_vars, key, value);
+      } else if (strcmp(my_argv[0], "pwd") == 0) {
         pwd();
       } else if (strcmp(my_argv[0], "echo") == 0) {
         echo(my_argc, my_argv);
@@ -46,6 +51,8 @@ int main(void) {
         mv(my_argc, my_argv);
       } else if (strcmp(my_argv[0], "cp") == 0) {
         cp(my_argc, my_argv);
+      } else if (strcmp(my_argv[0], "export") == 0) {
+        char *tmp = my_export(my_argv[1]);
       } else if (strcmp(my_argv[0], "exit") == 0) {
         printf("Good Bye!\n");
         break;
@@ -58,13 +65,19 @@ int main(void) {
         } else if (pid > 0) {
           int status;
           wait(&status);
-          WEXITSTATUS(status);
+          if (WIFEXITED(status) && WEXITSTATUS(status) == 127) {
+            fprintf(stderr, "invalid command: %s\n", my_argv[0]);
+          }
         } else {
-          char *newenvp[] = {NULL};
-          execvpe(my_argv[0], my_argv, newenvp);
-          exit(-1);
+          execvp(my_argv[0], my_argv);
+          exit(127);
         }
       }
+    }
+
+    if (key != NULL) {
+      free(key);
+      key = NULL;
     }
 
     for (i = 0; i < my_argc; i++) {
@@ -73,6 +86,7 @@ int main(void) {
 
     free(my_argv);
     my_argv = NULL;
+
     free(buffer);
     buffer = NULL;
   }
