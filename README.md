@@ -1,7 +1,6 @@
-# Low level programming
-
+# Low Level Programming
 ## Project Description
-This project implements basic UNIX utility commands including pwd, echo, cp, and mv and also implements shells (femto and pico).
+This project implements basic UNIX utility commands including pwd, echo, cp, and mv and also implements shells (femto, pico, and nano).
 
 ## Prerequisites
 - GCC compiler
@@ -9,17 +8,14 @@ This project implements basic UNIX utility commands including pwd, echo, cp, and
 - Basic UNIX/Linux environment
 
 ## Compilation and Usage
-
 ### Building the Project
 To compile all, run:
-
 ```bash
 make
 ```
 
 ### Cleaning the Project
 To remove compiled executables and object files:
-
 ```bash
 make clean
 ```
@@ -49,6 +45,35 @@ The pico shell is more advanced and can run most external commands thanks to the
 - `cp [source] [destination]` - Copy files
 - `mv [source] [destination]` - Move or rename files
 
+#### Nano Shell
+```bash
+./executables/shells/nano_shell
+```
+The nano shell extends the pico shell functionality with variable handling capabilities:
+- All pico shell built-in commands
+- Local variable assignment: `var=value`
+- Environment variable export: `export var_env=value`
+- Variable expansion: `echo $var`
+- Environment variable persistence for child processes
+
+Examples:
+```bash
+# Set a local variable
+user=john
+
+# Set and export an environment variable
+export PATH=/usr/bin:/bin
+
+# Use variables in commands
+echo "Hello, $user!"
+
+# Use environment variables with external commands
+export EDITOR=vim
+$EDITOR file.txt
+```
+
 ## Notes
 - Ensure you have executable permissions for all files
 - Run `chmod +x executables/shells/*` if needed
+- Environment variables set in nano_shell are available to child processes
+- Local variables are only accessible within the shell session
