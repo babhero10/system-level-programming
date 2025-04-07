@@ -1,12 +1,12 @@
 #define _GNU_SOURCE
-#include "../helper/include/helper.h"
-#include "../unix_utilities/include/utils.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "../helper/include/helper.h"
+#include "../unix_utilities/include/utils.h"
 
 int main(void) {
 
@@ -21,6 +21,7 @@ int main(void) {
 
   while (1) {
     printf("Nano shell prompt > ");
+    fflush(stdout);
 
     ret = getline(&buffer, &len, stdin);
     if (ret == -1) {

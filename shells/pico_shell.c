@@ -19,6 +19,7 @@ int main(void) {
 
   while (1) {
     printf("Pico shell prompt > ");
+    fflush(stdout);
 
     ret = getline(&buffer, &len, stdin);
     if (ret == -1) {

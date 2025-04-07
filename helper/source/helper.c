@@ -91,12 +91,12 @@ int count_chars_in_string(char *text, char find_chr) {
 }
 
 char *create_string(int len) {
-  char *new = (char *)malloc(len * sizeof(char));
-  if (new == NULL) {
+  char *str = (char *)malloc(len * sizeof(char));
+  if (str == NULL) {
     fprintf(stderr, "Can't allocat more memory\n");
     exit(-1);
   }
-  return new;
+  return str;
 }
 
 void free_string(char *str) {
